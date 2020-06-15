@@ -351,7 +351,7 @@ public class CTEScore extends Score {
         for (int i = 0; i < N - 1; i++) {
             sigma += Math.log(Math.abs(n[i + 1] - n[i]));
         }
-        return 1.0 / (N - 1) * sigma - Gamma.digamma(1) + Gamma.digamma(N);
+        return 1.0 / (N - 1) * sigma - Gamma.digamma(1) + Gamma.digamma(N) + Math.log(1);
     }
 
     /**
@@ -362,11 +362,12 @@ public class CTEScore extends Score {
      */
     private static double H(double[] n1, double[] n2) {
         double sigma = 0;
-        int N = n1.length;
+        int N1 = n1.length;
+        int N2 = n2.length;
         for (int i = 0; i < N - 1; i++) {
             sigma += Math.log(Math.max(Math.abs(n1[i + 1] - n1[i]), Math.abs(n2[i + 1] - n2[i])));
         }
-        return 2.0 / (N - 1) * sigma - Gamma.digamma(1) + Gamma.digamma(N);
+        return 2.0 / (N1+ N2 - 1) * sigma - Gamma.digamma(1) + Gamma.digamma(N)+ Math.log(1);
     }
 
     /**
@@ -378,11 +379,13 @@ public class CTEScore extends Score {
      */
     private static double H(double[] n1, double[] n2, double[] n3) {
         double sigma = 0;
-        int N = n1.length;
+        int N1 = n1.length;
+        int N2 = n2.length;
+        int N3 = n2.length;
         for (int i = 0; i < N - 1; i++) {
             sigma += Math.log(Math.max(Math.max(Math.abs(n1[i + 1] - n1[i]), Math.abs(n2[i + 1] - n2[i])), Math.abs(n3[i + 1] - n3[i])));
         }
-        return 3.0 / (N - 1) * sigma - Gamma.digamma(1) + Gamma.digamma(N);
+        return 3.0 / (N1+ N2 + N3 - 1) * sigma - Gamma.digamma(1) + Gamma.digamma(N)+ Math.log(1);
     }
 
     /**
