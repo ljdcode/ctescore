@@ -5,7 +5,7 @@ package bjut.ai.bn.score;
  *
  * <p>Description: Calculate CTE-score</p>
  *
- * <p>Copyright: Copyright (c) 2007</p>
+ * <p>Copyright: Copyright (c) 2020</p>
  *
  * <p>Company: </p>
  *
@@ -18,7 +18,7 @@ import bjut.ai.bn.CommonTools;
 import bjut.ai.bn.HillClimbing;
 import bjut.ai.bn.learning.acob.AlarmReader;
 
-import org.apache.commons.math3.special.Gamma;
+import org.apache.commons.math3.special.Gamma; //digamma function
 
 import java.io.File;
 import java.io.FileWriter;
@@ -69,9 +69,9 @@ public class CTEScore extends Score {
     @Override
     public void clearCache() {
         System.out.println("clear cash");
-        K2.count = 0;
-        K2.cacheCount = 0;
-        K2.actualCalcCount = 0;
+        CTEScore.count = 0;
+        CTEScore.cacheCount = 0;
+        CTEScore.actualCalcCount = 0;
         this.cacheResult = new HashMap<String, Double>();
     }
 
@@ -162,11 +162,6 @@ public class CTEScore extends Score {
             }
             hm.put(temp, ++count);
         }
-        // System.out.println("查询节点");
-        // for (int k : indexs)
-        // System.out.print(k + ",");
-        // System.out.println("");
-        // System.out.println(hm);
         return hm;
     }
 
@@ -189,11 +184,6 @@ public class CTEScore extends Score {
         return index;
     }
 
-    /**
-     * for test only
-     */
-
-
     private static double[] constructProbX(double[][] arrayProb) {
         double[] px = new double[arrayProb[0].length];
         for (int j = 0; j < arrayProb[0].length; j++) {
@@ -214,24 +204,12 @@ public class CTEScore extends Score {
         return py;
     }
 
-    /**
-     * @param ori double
-     * @return double
-     */
-    // public static double getMIRadio(int i, int j)
-    // {
-    // double mother = calcSquarSum();
-    // System.out.println("分母"+mother+"分子："+Inf[i][j]);
-    // double sum = Inf[i][j]/mother;
-    // return sum;
-    // }
     public static double getRefect(double ori) {
-        return (ori - K2.minMI) / (K2.maxMI - K2.minMI);
+        return (ori - CTEScore.minMI) / (CTEScore.maxMI - CTEScore.minMI);
     }
 
-
     public static BNGraph[] b = new BNGraph[2];
-    public static double[][] MDLArcScore;
+    public static double[][] CTEScoreArcScore;
 
    
     @Override
@@ -252,7 +230,6 @@ public class CTEScore extends Score {
     public static BNGraph HillClimbing(BNGraph G_k, Score a) {
         HillClimbing hill = new HillClimbing(G_k, a);
         G_k = hill.OptimizeBN();
-        //G_k = hill.OptimizeBN_CI();
         return G_k;
     }
 
