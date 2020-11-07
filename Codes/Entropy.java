@@ -21,7 +21,6 @@ public class Entropy {
 	 * double[][] y:		n x d data
 	 * double minist:		mine distance usually >0
 	 * String norm:			what type distance you want to compute:max or euclidean
-	 * String estimator:	'ksg' or 'naive'
 	 * ***/
 	public double get_h(double[][] x) { //Default parameters
 		int k=1;
@@ -316,7 +315,7 @@ public class Entropy {
 		return TH;
 	
 	}
-	public double get_ch(double[][] x, double[][] y) {
+	public double get_ch(double[][] x, double[][] y) { // two parameters
 		double[][] xy=new double[x.length][x[0].length+y[0].length];
 		for(int i=0;i<x.length;i++) {
 			for(int j=0;j<x[0].length+y[0].length;j++) {
@@ -330,7 +329,7 @@ public class Entropy {
 		return this.get_h(xy);
 	}
 	
-	public double get_ch1(double[][] x, double[][] y, double minist, int k, String norm) {
+	public double get_ch1(double[][] x, double[][] y, double minist, int k, String norm) {// five parameters
 		double[][] xy=new double[x.length][x[0].length+y[0].length];
 		for(int i=0;i<x.length;i++) {
 			for(int j=0;j<x[0].length+y[0].length;j++) {
@@ -344,7 +343,7 @@ public class Entropy {
 		return this.get_h1(xy, minist, norm, k);
 	}
 	
-	public double get_te(double[][] x, double[][] y) {
+	public double get_te(double[][] x, double[][] y) {//two parameters
 		int n=x.length/2,dx=x[0].length,dy=y[0].length;
 		if(n/2>y.length) {
 			return Double.NaN;
@@ -392,7 +391,7 @@ public class Entropy {
 		}
 		return xy;
 	}
-	public double get_te1(double[][] x, double[][] y, double minist, int k, String norm) {
+	public double get_te1(double[][] x, double[][] y, double minist, int k, String norm) { // five parameters
 		int n=x.length/2,dx=x[0].length,dy=y[0].length;
 		if(n/2>y.length) {
 			return Double.NaN;
@@ -434,110 +433,4 @@ public class Entropy {
 	}
 	
 	
-	public static void main(String[] args) {
-		String filepath = "D:\\sim1.txt";
-		int n=5; //number of nodes
-		double[][] x=null;
-		int lines=0;
-		try {
-			File file = new File(filepath);
-			FileReader fileReader = new FileReader(file);
-			LineNumberReader r = new LineNumberReader(fileReader);
-			r.skip(Long.MAX_VALUE);
-			lines = Math.min(10000, r.getLineNumber());
-			x = new double[lines][n];
-			r.close();
-		}catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
-		}
-		try {
-			File file = new File(filepath);
-			FileReader fileReader = new FileReader(file);
-			BufferedReader reader = new BufferedReader(fileReader);
-			int t=lines;
-			while(lines>0) {//依次读取文件的每一行
-				lines--;
-				String line = reader.readLine();
-				String[] num = line.trim().split(",");
-				for(int i=0;i<n;i++) {
-				x[t-lines-1][i] = Double.valueOf(num[i]);
-				}
-			}
-			reader.close();
-		}catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
-		}
-		
-		
-		//测试
-		double [][] a=new double[x.length][1], b=new double[x.length][1], c=new double[x.length][1]
-				, d=new double[x.length][1], e=new double[x.length][1], f=new double[x.length+x.length][1], g=new double[x.length][1];
-		for(int i=0;i<x.length;i++) {
-			a[i][0] = x[i][0];
-			b[i][0] = x[i][1];
-			c[i][0] = x[i][2];
-			d[i][0] = x[i][3];
-			e[i][0] = x[i][4];
-		}
-		for(int i=0;i<x.length*2;i++) {
-			if (i<x.length)
-			f[i][0] = x[i][0];
-			if (i>=x.length&&i<x.length*2)
-			f[i][0] = x[i-x.length][0];
-
-		}
-		System.out.println("begin");
-		//double mi=new continuous().get_mi(a,b,0.001,"euclidean","ksg");
-		
-		double h1=new Entropy().get_h(a);
-		double h2=new Entropy().get_h(b);
-		double h3=new Entropy().get_h(c);
-		double h4=new Entropy().get_h(d);
-		double h5=new Entropy().get_h(e);
-		double h6=new Entropy().get_h(f);
-		double h7=new Entropy().get_h2(f,1,"max");
-
-//		double h12=new Entropy().transferH(a,b);
-//		double h13=new Entropy().transferH(a,c);
-//		double h14=new Entropy().transferH(a,d);
-//		double h15=new Entropy().transferH(a,e);
-//		double h23=new Entropy().transferH(b,c);
-//		double h24=new Entropy().transferH(b,d);
-//		double h25=new Entropy().transferH(b,e);
-//		double h34=new Entropy().transferH(c,d);
-//		double h35=new Entropy().transferH(c,e);
-//		double h45=new Entropy().transferH(d,e);
-//		double h21=new Entropy().transferH(b,a);
-//		double h31=new Entropy().transferH(c,a);
-//		double h41=new Entropy().transferH(d,a);
-//		double h51=new Entropy().transferH(e,a);
-//		double h32=new Entropy().transferH(c,b);
-//		double h42=new Entropy().transferH(d,b);
-//		double h52=new Entropy().transferH(e,b);
-//		double h43=new Entropy().transferH(d,c);
-//		double h53=new Entropy().transferH(e,c);
-//		double h54=new Entropy().transferH(e,d);
-		System.out.println(h1+","+h2+","+h3+","+h4+","+h5+","+h6+","+h7);
-		
-//		System.out.println(0+","+h12+","+h13+","+h14+","+h15);
-//		System.out.println(h21+","+0+","+h23+","+h24+","+h25);
-//		System.out.println(h31+","+h32+","+0+","+h34+","+h35);
-//		System.out.println(h41+","+h42+","+h43+","+0+","+h45);
-//		System.out.println(h51+","+h52+","+h53+","+h54+","+0);
-//		double h121=h12-h21;
-//		double h232=h23-h32;
-//		double h343=h34-h43;
-//		double h454=h45-h54;
-//		double h151=h15-h51;
-//		System.out.println(h121+","+h232+","+h343+","+h454+","+h151);
-		
-		
-		//System.out.println(mi);
-		
-		
-		
-		System.out.println("end");
-	}
 }
