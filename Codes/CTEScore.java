@@ -1,4 +1,4 @@
-package bjut.ai.bn.score;
+    package bjut.ai.bn.score;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,10 +14,7 @@ import Jama.*;
 public class CTEScore extends Score{
 	
     public static int VEXNUM = 5;
-	public static CTEScore INSTANCE = null;
-	public static enum TYPE {
-		ORI, CI, CInew, HF, OP, AIO, SA, PC
-	};
+    public static CTEScore INSTANCE = null
     private String[][] Records;
     private HashMap<String, Double> cacheResult;
     
@@ -63,8 +60,9 @@ public class CTEScore extends Score{
 		
 	}
 	
-	private double calctransfer(int index, ArrayList<Integer> parent) {
+	private double calctransfer(int index, ArrayList<Integer> parent, double omega, double lamda, int regression) {
 		double score=0;
+		int regression=0;
 		Collections.sort(parent);
 		String key = ""+index+":"+parent.toString();
 		if(cacheResult.containsKey(key)) {
@@ -90,8 +88,8 @@ public class CTEScore extends Score{
         	for(int b=0;b<size;b++) {
         		y[b][0] = Data[b][parent.get(a)];
         	}
-//        	//jit
-//        	TransferEntropyCalculatorGaussian calc=null;//比较长时较准确
+//        	//Use JIT tool box
+//        	TransferEntropyCalculatorGaussian calc=null;//employ Gaussian kernal estimator
 //		    try {
 //				calc = new TransferEntropyCalculatorGaussian();
 //			} catch (InstantiationException e) {
@@ -126,18 +124,23 @@ public class CTEScore extends Score{
 			
         	double te = entropy.get_te(x, y);
         	double ce = entropy.conditionalH(x, y);
-        	score += -ce+te;
+        	score += -omega*ce+lamda*te;
         }
 		if(parent.size()>0) {
+			if(regression==1)
+			{
 			double[] E = this.LinearRegression(index, parent);
 			KernelDensity kd = new KernelDensity(E);
 			for(double i:E) {
 				score += kd.logp(i);
 			}
+			}
+			else
 			score -= 1.0*parent.size()*Math.log(this.Records.length)/2;
-			//score =-score ;
 			cacheResult.put(key, score);
 		}else {
+			if(regression==1)
+			{
 			double[] E=new double[this.Records.length];
 			for(int i=0;i<E.length;i++) {
 				E[i] = Double.valueOf(this.Records[i][index]);
@@ -145,6 +148,7 @@ public class CTEScore extends Score{
 			KernelDensity kd = new KernelDensity(E);
 			for(double i:E) {
 				score += kd.logp(i);
+			}
 			}
 			score -= 1.0*parent.size()*Math.log(this.Records.length)/2;
 			cacheResult.put(key, score);
