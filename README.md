@@ -1,5 +1,6 @@
 # CTE-score
 Java code of CTE-score (Implement based on Banjo)<br>
+For more details refer to The manual of the CTE.jart.pdf <br>
 
 Run:<br>
 java -jar CTE.jar F:\\CTE\\sim1.txt 5 200 50 10 <br>
@@ -29,7 +30,6 @@ Parmeter10: 100 ; Number of ants<br>
 **********************************************************************<br>
 
 Note:<br>
-For more details refer to Manuscript.pdf in this file.
 Data should seperate by comma (see Smith simulated dataset.zip).<br>
 
 
