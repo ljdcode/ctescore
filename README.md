@@ -29,7 +29,7 @@ Parmeter10: 100 ; Number of ants<br>
 **********************************************************************<br>
 
 Note:<br>
-More details refer to Manuscript.
+For more details refer to Manuscript.pdf in this file.
 Data should seperate by comma (see Smith simulated dataset.zip).<br>
 
 
