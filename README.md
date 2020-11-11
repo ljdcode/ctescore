@@ -17,7 +17,7 @@ Parmeter5: 10 ; Running times (Integers greater than 0).<br>
 Default parameters of CTE:<br>
 Parmeter1: 1 ; k <br>
 Parmeter2: Maximum;  normal<br>
-Parmeter3: 100 ;  omega<br>
+Parmeter3: T ;  omega<br>
 Parmeter4: 1  ;  lamda<br>
 Parmeter5: T/2 ; m,n (T is the time length)<br>
 
@@ -25,7 +25,7 @@ Default parameters of ACO algorithm:<br>
 Parmeter6: 1 ; alpha <br>
 Parmeter7: 2;  beta<br>
 Parmeter8: 0.2 ;  rou<br>
-Parmeter9: 0.8  ;  theta<br>
+Parmeter9: 0.8  ;  theta0<br>
 Parmeter10: 20 ; Number of ants<br>
 **********************************************************************<br>
 
